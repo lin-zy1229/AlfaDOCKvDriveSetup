@@ -80,6 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller\AlfaPackOfficeAPI.cs" />
+    <Compile Include="Controller\FileDirNode.cs" />
     <Compile Include="Controller\SyncController.cs" />
     <Compile Include="Model\AlfaDrive.cs" />
     <Compile Include="Model\FormUpload.cs" />

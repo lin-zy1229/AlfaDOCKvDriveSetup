@@ -17,6 +17,7 @@ namespace AlfaDOCKvDrive.Controller
     {
         public string createdDirFile = "", deletedFile="";
         //public Dictionary<string, string> alfaDriveDirFiles = new Dictionary<string, string>();
+        public Dictionary<int, List<JToken>> alfaDriveDirFilesInfoArray = new Dictionary<int, List<JToken>>();
         public Dictionary<string, JToken> alfaDriveDirFilesInfo = new Dictionary<string, JToken>();
 
         public FormSettings workingForm = null;
@@ -90,7 +91,8 @@ namespace AlfaDOCKvDrive.Controller
             Console.WriteLine("Downloading...");
             workingForm.SetStateLabelText("Downloading...");
 
-            AlfaPackOfficeAPI.getInstance().getFiles();
+            AlfaPackOfficeAPI.getInstance().initFileInfo(-1);
+            AlfaPackOfficeAPI.getInstance().getFiles(-1, "");
         }
 
         private void bgWorkerDownload_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
@@ -103,6 +105,11 @@ namespace AlfaDOCKvDrive.Controller
             Console.WriteLine("Downloading completed!");
             workingForm.SetStateLabelText("Downloading completed!");
 
+            //
+            // add new added files during sync off
+            //
+            
+            /*
             newFiles.Clear();
             foreach (string file in Directory.GetFiles(AlfaDrive.getInstance().DrivePath))
             {
@@ -122,6 +129,7 @@ namespace AlfaDOCKvDrive.Controller
                 Thread.Sleep(1000);
             }
             bgwUploader.RunWorkerAsync();
+            */
 
             downloadTimer.Start();
             //

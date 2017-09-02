@@ -487,7 +487,6 @@ namespace AlfaDOCKvDrive.View
             Process proc = null;
             try
             {
-
                 proc = new Process();
                 proc.StartInfo.WorkingDirectory = batDir;
                 proc.StartInfo.FileName = batDir + @"\" + regFilename;
@@ -505,7 +504,14 @@ namespace AlfaDOCKvDrive.View
             dr = MessageBox.Show("Would you like to remain your "+ AlfaDrive.APP_NAME + " data?", AlfaDrive.APP_NAME, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
             if (dr == DialogResult.No)
             {
-                Directory.Delete(AlfaDrive.getInstance().DrivePath, true);
+
+                try
+                {
+                    Directory.Delete(AlfaDrive.getInstance().DrivePath, true);
+                }catch(Exception ex)
+                {
+                    Console.WriteLine(ex.StackTrace);
+                }
             }
             progressBar1.Value = 100;
             lblState.Text = "Uninstalled successfully.";
@@ -546,7 +552,6 @@ namespace AlfaDOCKvDrive.View
 
         public static bool isInstalled()
         {
-
             var hkcuReg = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, RegistryView.Registry64);
             string classKey = @"Software\Classes\CLSID\{" + AlfaDrive.GUID + "}";
 

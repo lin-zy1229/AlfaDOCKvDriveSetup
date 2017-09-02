@@ -22,7 +22,7 @@ namespace AlfaDOCKvDrive.View
             //notifyIcon1.BalloonTipTitle = Model.AlfaDrive.APP_NAME + "1.0";
             notifyIcon1.ShowBalloonTip(2000);
 
-            chkSync.Checked = true;
+            //chkSync.Checked = true;
         }
 
         public const int WM_NCLBUTTONDOWN = 0xA1;

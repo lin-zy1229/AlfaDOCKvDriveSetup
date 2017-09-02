@@ -29,7 +29,7 @@ namespace AlfaDOCKvDrive.Controller
         }
         // GET FILES
         const string GET_FILES_URL = @"https://www.alfadock-pack.com/api/adsocket/getSocketFiles";
-        void initFileInfo(int parentID)
+        internal void initFileInfo(int parentID)
         {
             //
             // create web request
@@ -112,8 +112,9 @@ namespace AlfaDOCKvDrive.Controller
             */
 
             if (parentID == -1)
-                SyncController.getInstance().alfaDriveDirFilesInfo.Clear();
+                SyncController.getInstance().alfaDriveDirFilesInfoArray.Clear();
 
+            SyncController.getInstance().alfaDriveDirFilesInfoArray.Add(parentID, new List<JToken>());
             //
             // register cloud files
             //
@@ -122,34 +123,48 @@ namespace AlfaDOCKvDrive.Controller
                 var filename = jfile["filename"].ToString();
                 var guid = jfile["guid"].ToString();
                 var filetype = (int)jfile["filetype"];
-                if (!SyncController.getInstance().alfaDriveDirFilesInfo.ContainsKey(filename))
+                var id = (int) jfile["id"];
+
+                SyncController.getInstance().alfaDriveDirFilesInfoArray[parentID].Add(jfile);
+
+                if (filetype == 0)
                 {
-                    SyncController.getInstance().alfaDriveDirFilesInfo.Add(filename, jfile);
+                    initFileInfo(id);
                 }
+                else
+                {
+
+                }
+
+                
             }
         }
+
+
         
-        public void getFiles()
+        public void getFiles(int parentId, string abPath)
         {
-            initFileInfo(-1);
             //
             // downloading
             //
-            foreach (var jfile in SyncController.getInstance().alfaDriveDirFilesInfo.Values)
+
+            foreach (var jfile in SyncController.getInstance().alfaDriveDirFilesInfoArray[parentId])
             {
                 var filename = jfile["filename"].ToString();
                 var guid = jfile["guid"].ToString();
                 var filetype = (int) jfile["filetype"];
+                var id = (int)jfile["id"];
                 //
                 // download file
                 //
                 // File.Create(AlfaDrive.getInstance().path + @"\" + filename);
                 if (filetype == 0)
                 {
-                    Directory.CreateDirectory(AlfaDrive.getInstance().DrivePath + @"\" + filename);
+                    Directory.CreateDirectory(AlfaDrive.getInstance().DrivePath + @"\" + abPath + filename);
+                    getFiles(id, abPath + filename + @"\");
                 }
                 else if (filetype == 1) {
-                    downloadFileByGuid(guid, filename);
+                    downloadFileByGuid(guid, abPath + filename);
                 }
             }
         }
@@ -159,16 +174,20 @@ namespace AlfaDOCKvDrive.Controller
         private string downloadFileByGuid(string guid, string filename)
         {
             string localfilename = AlfaDrive.getInstance().DrivePath + @"\" + filename;
+            filename = new FileInfo(localfilename).Name;
             if (File.Exists(localfilename))
             {
                 return localfilename;
             }
+            File.Create(localfilename);
+            /*
             WebClient wb = new WebClient();
             wb.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.33 Safari/537.36");
             string url = String.Format(@"https://www.alfadock-pack.com/api/file/downloadFileByGUID?guid={0}&filename={1}",
                 guid,
                 filename);
             wb.DownloadFile(url, localfilename);
+            */
             return localfilename;
         }
         
