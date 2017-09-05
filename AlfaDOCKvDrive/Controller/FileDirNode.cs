@@ -7,17 +7,24 @@ using System.Threading.Tasks;
 
 namespace AlfaDOCKvDrive.Controller
 {
-    public  class FileDirNode
+    public class FileDirNode
     {
-        int id;
-        int parentId;
-        JToken jtoken;
-
-        public FileDirNode(int id, int parentId, JToken jtoken)
+        private string path = "";
+        public string Path
         {
-            this.id = id;
-            this.parentId = parentId;
-            this.jtoken = jtoken;
+            get
+            {
+                return path;
+            }
+        }
+        
+        private List<JToken> jtokenList = new List<JToken>();
+        public List<JToken> JTokenList
+        { get { return jtokenList; } }
+
+        public FileDirNode(string path)
+        {
+            this.path = path;
         }
     }
 }

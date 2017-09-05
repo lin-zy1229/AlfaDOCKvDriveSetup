@@ -15,10 +15,14 @@ namespace AlfaDOCKvDrive.Controller
 {
     public class SyncController
     {
-        public string createdDirFile = "", deletedFile="";
+        public string createdDirFile = "", deletedFile="", changedDirFile="";
+
         //public Dictionary<string, string> alfaDriveDirFiles = new Dictionary<string, string>();
-        public Dictionary<int, List<JToken>> alfaDriveDirFilesInfoArray = new Dictionary<int, List<JToken>>();
-        public Dictionary<string, JToken> alfaDriveDirFilesInfo = new Dictionary<string, JToken>();
+        
+        public Dictionary<int, FileDirNode> alfaDriveDirFilesInfoArray = new Dictionary<int, FileDirNode>();
+        public Dictionary<string, int> alfaDriveDirFilesInfoParentIDArray = new Dictionary<string, int>();
+
+        //public Dictionary<string, JToken> alfaDriveDirFilesInfo = new Dictionary<string, JToken>();
 
         public FormSettings workingForm = null;
         internal void setForm(FormSettings formSettings)
@@ -39,7 +43,7 @@ namespace AlfaDOCKvDrive.Controller
         }
         private SyncController()
         {
-            downloadTimer.Interval = 2 * 60 * 1000;
+            downloadTimer.Interval = 60 * 60 * 1000;
             downloadTimer.Tick += DownloadTimer_Tick;
 
 
@@ -77,7 +81,7 @@ namespace AlfaDOCKvDrive.Controller
             Console.WriteLine(String.Format( "Renaming...{0} to {1}", renameOld, renameNew));
             workingForm.SetStateLabelText(String.Format("Renaming...{0} to {1}", renameOld, renameNew));
 
-            AlfaPackOfficeAPI.getInstance().renameFile(renameOld, renameNew);
+            AlfaPackOfficeAPI.getInstance().renameFile(new FileInfo(renameOld).Name, new FileInfo(renameNew).Name, getFileId(new FileInfo(renameOld)));
         }
 
         private void BgwRenamer_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
@@ -91,8 +95,8 @@ namespace AlfaDOCKvDrive.Controller
             Console.WriteLine("Downloading...");
             workingForm.SetStateLabelText("Downloading...");
 
-            AlfaPackOfficeAPI.getInstance().initFileInfo(-1);
-            AlfaPackOfficeAPI.getInstance().getFiles(-1, "");
+            AlfaPackOfficeAPI.getInstance().initFileInfo(-1, "");
+            AlfaPackOfficeAPI.getInstance().getFiles(-1);
         }
 
         private void bgWorkerDownload_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
@@ -168,13 +172,28 @@ namespace AlfaDOCKvDrive.Controller
                 }
                 Console.WriteLine("Uploading..." + createdDirFile);
                 workingForm.SetStateLabelText("Uploading..." + new FileInfo(createdDirFile).Name);
-                AlfaPackOfficeAPI.getInstance().uploadFile(createdDirFile);
+                AlfaPackOfficeAPI.getInstance().uploadFile(createdDirFile, getParentId(new FileInfo(createdDirFile)));
             }
+            if (changedDirFile.Equals(""))
+            {
 
+            }
+            else
+            {
+                if (!isSync)
+                {
+                    workingForm.SetStateLabelText("Sync canceled.");
+                    Console.WriteLine("Sync canceled.");
+                    return;
+                }
+                Console.WriteLine("Editing..." + changedDirFile);
+                workingForm.SetStateLabelText("Editing..." + new FileInfo(changedDirFile).Name);
+                AlfaPackOfficeAPI.getInstance().uploadFile(changedDirFile, getParentId(new FileInfo(changedDirFile)));
+            }
             //
             // upload unsynced files
             //
-            foreach(string file in newFiles)
+            foreach (string file in newFiles)
             {
                 if (!isSync)
                 {
@@ -184,7 +203,7 @@ namespace AlfaDOCKvDrive.Controller
                 }
                 Console.WriteLine("Uploading..." + new FileInfo(file).Name);
                 workingForm.SetStateLabelText("Uploading..." + new FileInfo(file).Name);
-                AlfaPackOfficeAPI.getInstance().uploadFile(file);
+                AlfaPackOfficeAPI.getInstance().uploadFile(file, getParentId(new FileInfo(createdDirFile)));
             }
             newFiles.Clear();
             Console.WriteLine("Uploading completed...");
@@ -200,6 +219,7 @@ namespace AlfaDOCKvDrive.Controller
         {
             if (File.Exists(createdDirFile))
             {
+                /*
                 FileInfo fi = new FileInfo(createdDirFile);
                 if (alfaDriveDirFilesInfo.Keys.Contains(fi.Name))
                 {
@@ -209,11 +229,30 @@ namespace AlfaDOCKvDrive.Controller
                 {
                     alfaDriveDirFilesInfo.Add(fi.Name, JToken.Parse(""));
                 }
+                */
                 Console.WriteLine("Uploading completed..." + createdDirFile);
                 workingForm.SetStateLabelText("Uploading completed..." + new FileInfo(createdDirFile).Name);
             }
-            
+
+            if (File.Exists(changedDirFile))
+            {
+                /*
+                FileInfo fi = new FileInfo(createdDirFile);
+                if (alfaDriveDirFilesInfo.Keys.Contains(fi.Name))
+                {
+                    alfaDriveDirFilesInfo[fi.Name] = JToken.Parse("");
+                }
+                else
+                {
+                    alfaDriveDirFilesInfo.Add(fi.Name, JToken.Parse(""));
+                }
+                */
+                Console.WriteLine("Edit completed..." + changedDirFile);
+                workingForm.SetStateLabelText("Edit completed..." + new FileInfo(changedDirFile).Name);
+            }
+
             createdDirFile = "";
+            changedDirFile = "";
         }
 
         private void bgWorkerDelete_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
@@ -225,9 +264,10 @@ namespace AlfaDOCKvDrive.Controller
             Console.WriteLine("Deleting..." + deletedFile);
             workingForm.SetStateLabelText("Deleting..." + new FileInfo(deletedFile).Name);
 
-            AlfaPackOfficeAPI.getInstance().deleteFile(new FileInfo(deletedFile).Name);
+            AlfaPackOfficeAPI.getInstance().deleteFile(getFileId(new FileInfo(deletedFile)));
 
         }
+
 
         private void bgWorkerDelete_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
         {
@@ -239,24 +279,25 @@ namespace AlfaDOCKvDrive.Controller
             if (!File.Exists(deletedFile))
             {
                 FileInfo fi = new FileInfo(deletedFile);
+                /*
                 if (alfaDriveDirFilesInfo.Keys.Contains(fi.Name, new StringComparer()))
                 {
                     alfaDriveDirFilesInfo.Remove(fi.Name);
                 }
+                */
                 workingForm.SetStateLabelText("Deleting completed..." + fi.Name);
                 Console.WriteLine("Deleting completed..." + deletedFile);
             }
             deletedFile = "";
         }
 
-
-
-
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public void runWatcher()
         {
             // Create a new FileSystemWatcher and set its properties.
             FileSystemWatcher watcher = new FileSystemWatcher();
+            watcher.IncludeSubdirectories = true;
+            
             watcher.Path = AlfaDOCKvDrive.Model.AlfaDrive.getInstance().DrivePath;
             /* Watch for changes in LastAccess and LastWrite times, and
                the renaming of files or directories. */
@@ -324,6 +365,7 @@ namespace AlfaDOCKvDrive.Controller
 
         // Define the event handlers.
         List<string> createdDirFileTempList = new List<string>();
+        List<string> changedDirFileTempList = new List<string>();
 
         class StringComparer : IEqualityComparer<string>
         {
@@ -344,56 +386,166 @@ namespace AlfaDOCKvDrive.Controller
             // Specify what is done when a file is changed, created, or deleted.
             
             FileInfo fi = new FileInfo(e.FullPath);
-            if (!alfaDriveDirFilesInfo.Keys.Contains(fi.Name.ToString(), new StringComparer()))
+            //if (!alfaDriveDirFilesInfo.Keys.Contains(fi.Name.ToString(), new StringComparer()))
+            if (fi.Attributes == FileAttributes.Directory)
             {
-                //
-                // creating completed
-                //
-                if (createdDirFileTempList.Contains(e.FullPath, new StringComparer()))
+                if (!containsInDriveFile(fi))
                 {
-                    Console.WriteLine("OnCreated File: " + e.FullPath + " " + e.ChangeType);
-                    workingForm.SetStateLabelText("OnCreated File: " + e.Name + " " + e.ChangeType);
-
-                    while (bgwUploader.IsBusy)
+                    //
+                    // creating completed
+                    //
+                    if (createdDirFileTempList.Contains(e.FullPath, new StringComparer()))
                     {
-                        System.Threading.Thread.Sleep(1000);
-                    }
+                        Console.WriteLine("OnCreated File: " + e.FullPath + " " + e.ChangeType);
+                        workingForm.SetStateLabelText("OnCreated File: " + e.Name + " " + e.ChangeType);
 
-                    createdDirFile = e.FullPath;
-                    createdDirFileTempList.Remove(e.FullPath);
-                    // need to wait until file creation finish completedly.
-                    Thread.Sleep(500);
-                    if (isSync) bgwUploader.RunWorkerAsync();
+                        while (bgwUploader.IsBusy)
+                        {
+                            System.Threading.Thread.Sleep(1000);
+                        }
+
+                        createdDirFile = e.FullPath;
+                        createdDirFileTempList.Remove(e.FullPath);
+                        // need to wait until file creation finish completedly.
+                        Thread.Sleep(500);
+                        if (isSync) bgwUploader.RunWorkerAsync();
+                    }
+                    //
+                    // changed
+                    //
+                    else
+                    {
+
+                    }
                 }
-                //
-                // changed
-                //
                 else
                 {
+                    if (changedDirFileTempList.Contains(e.FullPath, new StringComparer()))
+                    {
+                        Console.WriteLine("OnChanged File: " + e.FullPath + " " + e.ChangeType);
+                        workingForm.SetStateLabelText("OnChanged File: " + e.Name + " " + e.ChangeType);
 
+                        while (bgwUploader.IsBusy)
+                        {
+                            System.Threading.Thread.Sleep(1000);
+                        }
+
+                        changedDirFile = e.FullPath;
+                        changedDirFileTempList.Remove(e.FullPath);
+                        // need to wait until file creation finish completedly.
+                        Thread.Sleep(500);
+                        if (isSync) bgwUploader.RunWorkerAsync();
+                    }
                 }
             }
+            else
+            {
 
+            }
         }
         private void OnCreated(object source, FileSystemEventArgs e)
         {
-            if (!isSync) return;
+            if (isSync == false) return;
+
+            while(bgwDownloader.IsBusy)
+            {
+                Thread.Sleep(1000);
+            }
             // Specify what is done when a file is changed, created, or deleted.
-            
+
             FileInfo fi = new FileInfo(e.FullPath);
-            if (!alfaDriveDirFilesInfo.Keys.Contains(fi.Name, new StringComparer()))
+            //if (!alfaDriveDirFilesInfoArray.Keys.Contains(fi.Name, new StringComparer()))
+            if (containsInDriveFile(fi) == false)
             {
                 Console.WriteLine("OnCreated File: " + e.FullPath + " " + e.ChangeType);
                 workingForm.SetStateLabelText("OnCreated File: " + e.Name + " " + e.ChangeType);
                 createdDirFileTempList.Add(e.FullPath);
             }
         }
+
+        private int getParentId(FileInfo fi)
+        {
+            // get relative directory path string
+            string key = fi.Directory.FullName.Substring(AlfaDrive.getInstance().DrivePath.Length);
+            if (key == "")
+            {
+
+            }
+            else
+            {
+                key = key.Substring(1) + @"\";
+            }
+            // check dir-parentId dictionary
+            if (alfaDriveDirFilesInfoParentIDArray.ContainsKey(key))
+            {
+                // get parentId corresponding to the relative path string
+                return alfaDriveDirFilesInfoParentIDArray[key];
+            }
+            return -2;
+        }
+        private int getFileId(FileInfo fi)
+        {
+            // get relative directory path string
+            string key = fi.Directory.FullName.Substring(AlfaDrive.getInstance().DrivePath.Length);
+            if (key == "")
+            {
+
+            }
+            else
+            {
+                key = key.Substring(1) + @"\";
+            }
+            // check dir-parentId dictionary
+            if (alfaDriveDirFilesInfoParentIDArray.ContainsKey(key))
+            {
+                // get parentId corresponding to the relative path string
+                int parenteId = alfaDriveDirFilesInfoParentIDArray[key];
+                // loop all files
+                foreach (var jfile in alfaDriveDirFilesInfoArray[parenteId].JTokenList)
+                {
+                    if (jfile["filename"].ToString().ToLower().Equals(fi.Name.ToLower()))
+                        return (int) jfile["id"];
+                }
+            }
+            return -1;
+        }
+
+
+        private bool containsInDriveFile(FileInfo fi)
+        {
+            // get relative directory path string
+            string key = fi.Directory.FullName.Substring(AlfaDrive.getInstance().DrivePath.Length);
+            if (key == "")
+            {
+
+            }
+            else
+            {
+                key = key.Substring(1) + @"\";
+            }
+            // check dir-parentId dictionary
+            if (alfaDriveDirFilesInfoParentIDArray.ContainsKey(key))
+            {
+                // get parentId corresponding to the relative path string
+                int parenteId = alfaDriveDirFilesInfoParentIDArray[key];
+                // loop all files
+                foreach (var jfile in alfaDriveDirFilesInfoArray[parenteId].JTokenList)
+                {
+                    if (jfile["filename"].ToString().ToLower().Equals(fi.Name.ToLower()))
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
         private void OnDeleted(object source, FileSystemEventArgs e)
         {
             if (!isSync) return;
             // Specify what is done when a file is changed, created, or deleted.
             FileInfo fi = new FileInfo(e.FullPath);
-            if (alfaDriveDirFilesInfo.Keys.Contains(fi.Name, new StringComparer()))
+            //if (alfaDriveDirFilesInfo.Keys.Contains(fi.Name, new StringComparer()))
+            if(containsInDriveFile(fi))
             {
                 Console.WriteLine("OnDeleted File: " + e.FullPath + " " + e.ChangeType);
                 workingForm.SetStateLabelText("OnDeleted File: " + e.Name + " " + e.ChangeType);
@@ -413,7 +565,8 @@ namespace AlfaDOCKvDrive.Controller
             if (!isSync) return;
             // Specify what is done when a file is renamed.
             FileInfo fi = new FileInfo(e.OldFullPath);
-            if (alfaDriveDirFilesInfo.Keys.Contains(fi.Name, new StringComparer()))
+            //if (alfaDriveDirFilesInfo.Keys.Contains(fi.Name, new StringComparer()))
+            if(containsInDriveFile(fi))
             {
                 Console.WriteLine("OnRenamed File: {0} renamed to {1}", e.OldFullPath, e.FullPath);
                 workingForm.SetStateLabelText(String.Format("OnRenamed File: {0} renamed to {1}", e.OldName, e.Name));
@@ -422,8 +575,8 @@ namespace AlfaDOCKvDrive.Controller
                 {
                     Thread.Sleep(1000);
                 }
-                renameOld = e.OldName;
-                renameNew = e.Name;
+                renameOld = e.OldFullPath;
+                renameNew = e.FullPath;
 
                 bgwRenamer.RunWorkerAsync();
             }

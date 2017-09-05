@@ -59,7 +59,7 @@
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.label11 = new System.Windows.Forms.Label();
+            this.lblVersion = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -356,18 +356,18 @@
             this.exitToolStripMenuItem.Text = "&Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
-            // label11
+            // lblVersion
             // 
-            this.label11.AutoSize = true;
-            this.label11.BackColor = System.Drawing.Color.PaleGoldenrod;
-            this.label11.Font = new System.Drawing.Font("Agency FB", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(188, 25);
-            this.label11.Margin = new System.Windows.Forms.Padding(0);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(27, 17);
-            this.label11.TabIndex = 7;
-            this.label11.Text = "0.01";
-            this.label11.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FormSettings_MouseDown);
+            this.lblVersion.AutoSize = true;
+            this.lblVersion.BackColor = System.Drawing.Color.PaleGoldenrod;
+            this.lblVersion.Font = new System.Drawing.Font("Agency FB", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblVersion.Location = new System.Drawing.Point(188, 25);
+            this.lblVersion.Margin = new System.Windows.Forms.Padding(0);
+            this.lblVersion.Name = "lblVersion";
+            this.lblVersion.Size = new System.Drawing.Size(27, 17);
+            this.lblVersion.TabIndex = 7;
+            this.lblVersion.Text = "0.01";
+            this.lblVersion.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FormSettings_MouseDown);
             // 
             // FormSettings
             // 
@@ -386,7 +386,7 @@
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.label11);
+            this.Controls.Add(this.lblVersion);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label1);
@@ -444,7 +444,7 @@
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
-        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label lblVersion;
     }
 }
 

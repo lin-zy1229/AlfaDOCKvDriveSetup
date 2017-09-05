@@ -583,7 +583,7 @@ namespace AlfaDOCKvDrive.View
             }
         }
 
-        public static void CopyStream(Stream input, Stream output)
+        private void CopyStream(Stream input, Stream output)
         {
             byte[] buffer = new byte[8 * 1024];
             int len;

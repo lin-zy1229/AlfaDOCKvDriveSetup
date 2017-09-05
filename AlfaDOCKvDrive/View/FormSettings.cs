@@ -11,6 +11,8 @@ namespace AlfaDOCKvDrive.View
         {
             InitializeComponent();
 
+
+            lblVersion.Text = AlfaPackOfficeAPI.version;
             Model.AlfaDrive.getInstance().init();
 
             Controller.SyncController.getInstance().setForm(this);
@@ -45,6 +47,7 @@ namespace AlfaDOCKvDrive.View
         bool byProgrammatically = false;
         private void chkSync_CheckedChanged(object sender, EventArgs e)
         {
+            chkSync.Enabled = false;
             if (byProgrammatically)
             {
                 byProgrammatically = false;
