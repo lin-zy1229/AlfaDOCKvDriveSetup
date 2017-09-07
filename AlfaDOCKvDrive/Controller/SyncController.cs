@@ -387,7 +387,7 @@ namespace AlfaDOCKvDrive.Controller
             
             FileInfo fi = new FileInfo(e.FullPath);
             //if (!alfaDriveDirFilesInfo.Keys.Contains(fi.Name.ToString(), new StringComparer()))
-            if (fi.Attributes == FileAttributes.Directory)
+            if (fi.Attributes != FileAttributes.Directory)
             {
                 if (!containsInDriveFile(fi))
                 {

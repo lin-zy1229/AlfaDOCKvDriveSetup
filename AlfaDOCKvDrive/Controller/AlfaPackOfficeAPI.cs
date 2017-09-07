@@ -186,8 +186,9 @@ namespace AlfaDOCKvDrive.Controller
             Console.WriteLine(string.Format("Downloading...{0}", absFilename));
             SyncController.getInstance().workingForm.SetStateLabelText(string.Format("Downloading...{0}", absFilename));
 
-            //File.Create(localfilename).Close();
+            File.Create(localfilename).Close();
 
+            
             WebClient wb = new WebClient();
             wb.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.33 Safari/537.36");
             string url = String.Format(@"https://www.alfadock-pack.com/api/file/downloadFileByGUID?guid={0}&filename={1}",
@@ -195,6 +196,7 @@ namespace AlfaDOCKvDrive.Controller
                 filename);
             wb.DownloadFile(url, localfilename);
             
+
             return localfilename;
         }
         // https://www.alfadock-pack.com/api/adsocket/uploadSocketFolder
@@ -352,11 +354,11 @@ namespace AlfaDOCKvDrive.Controller
 
             // Generate post objects
             Dictionary<string, object> postParameters = new Dictionary<string, object>();
-            postParameters.Add("file", new FormUpload.FileParameter(fileBytes, filename, "")); //application/msword
+            postParameters.Add("file", new FormUpload.FileParameter(fileBytes, filename)); //application/msword
             postParameters.Add("cid", AlfaDOCKvDrive.Model.AlfaDrive.getInstance().compId);
             postParameters.Add("userid", AlfaDOCKvDrive.Model.AlfaDrive.getInstance().userId);
             postParameters.Add("filename", filename);
-            postParameters.Add("replace", "true");
+            postParameters.Add("replace", "false");
             postParameters.Add("fileLength", fi.Length.ToString());
             postParameters.Add("socType","office");
             postParameters.Add("parentid", parentId);
