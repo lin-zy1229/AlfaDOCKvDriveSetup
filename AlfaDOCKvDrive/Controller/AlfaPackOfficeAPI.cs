@@ -373,6 +373,8 @@ namespace AlfaDOCKvDrive.Controller
             }
             var reader = new System.IO.StreamReader(response.GetResponseStream());
             string responseString = reader.ReadToEnd();
+
+            initFileInfo(-1, "");
         }
     }
 }
