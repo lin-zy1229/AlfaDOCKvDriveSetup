@@ -167,7 +167,10 @@ namespace AlfaDOCKvDrive.Controller
                     getFiles(id);
                 }
                 else if (filetype == 1) {
-                    downloadFileByGuid(guid, SyncController.getInstance().alfaDriveDirFilesInfoArray[parentId].Path + filename);
+                    string localfilename = downloadFileByGuid(guid, SyncController.getInstance().alfaDriveDirFilesInfoArray[parentId].Path + filename);
+                    DateTime creationTime = DateTime.Parse(jfile["date"].ToString());
+
+                    File.SetCreationTime(localfilename, creationTime);
                 }
             }
         }
@@ -186,8 +189,7 @@ namespace AlfaDOCKvDrive.Controller
             Console.WriteLine(string.Format("Downloading...{0}", absFilename));
             SyncController.getInstance().workingForm.SetStateLabelText(string.Format("Downloading...{0}", absFilename));
 
-            File.Create(localfilename).Close();
-
+            //File.Create(localfilename).Close();
             
             WebClient wb = new WebClient();
             wb.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.33 Safari/537.36");
@@ -289,6 +291,8 @@ namespace AlfaDOCKvDrive.Controller
                 {
                     return;
                 }
+                var reader = new System.IO.StreamReader(response.GetResponseStream());
+                string responseString = reader.ReadToEnd();
             }
             catch (Exception ex){ Console.WriteLine(ex.StackTrace); }
             // once renaming done, initialize files info

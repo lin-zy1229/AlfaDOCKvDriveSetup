@@ -30,7 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSettings));
-            this.button3 = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -63,18 +62,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // button3
-            // 
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.ForeColor = System.Drawing.SystemColors.Window;
-            this.button3.Location = new System.Drawing.Point(356, 255);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 11;
-            this.button3.Text = "Apply";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // pictureBox1
             // 
@@ -125,6 +112,7 @@
             // txtUserName
             // 
             this.txtUserName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtUserName.Enabled = false;
             this.txtUserName.Location = new System.Drawing.Point(301, 106);
             this.txtUserName.Name = "txtUserName";
             this.txtUserName.Size = new System.Drawing.Size(130, 20);
@@ -134,6 +122,7 @@
             // txtCompName
             // 
             this.txtCompName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtCompName.Enabled = false;
             this.txtCompName.Location = new System.Drawing.Point(86, 106);
             this.txtCompName.Name = "txtCompName";
             this.txtCompName.Size = new System.Drawing.Size(130, 20);
@@ -155,6 +144,7 @@
             // txtCompId
             // 
             this.txtCompId.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtCompId.Enabled = false;
             this.txtCompId.Location = new System.Drawing.Point(86, 132);
             this.txtCompId.Name = "txtCompId";
             this.txtCompId.Size = new System.Drawing.Size(130, 20);
@@ -164,6 +154,7 @@
             // txtUserId
             // 
             this.txtUserId.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtUserId.Enabled = false;
             this.txtUserId.Location = new System.Drawing.Point(301, 132);
             this.txtUserId.Name = "txtUserId";
             this.txtUserId.Size = new System.Drawing.Size(130, 20);
@@ -217,6 +208,7 @@
             // txtCompPassword
             // 
             this.txtCompPassword.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtCompPassword.Enabled = false;
             this.txtCompPassword.Location = new System.Drawing.Point(86, 158);
             this.txtCompPassword.Name = "txtCompPassword";
             this.txtCompPassword.Size = new System.Drawing.Size(130, 20);
@@ -226,6 +218,7 @@
             // txtUserPassword
             // 
             this.txtUserPassword.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtUserPassword.Enabled = false;
             this.txtUserPassword.Location = new System.Drawing.Point(301, 158);
             this.txtUserPassword.Name = "txtUserPassword";
             this.txtUserPassword.Size = new System.Drawing.Size(130, 20);
@@ -267,16 +260,17 @@
             // chkSync
             // 
             this.chkSync.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chkSync.BackColor = System.Drawing.Color.OliveDrab;
             this.chkSync.FlatAppearance.BorderColor = System.Drawing.Color.Beige;
             this.chkSync.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.chkSync.ForeColor = System.Drawing.SystemColors.Window;
-            this.chkSync.Location = new System.Drawing.Point(18, 255);
+            this.chkSync.Location = new System.Drawing.Point(327, 255);
             this.chkSync.Name = "chkSync";
             this.chkSync.Size = new System.Drawing.Size(104, 23);
             this.chkSync.TabIndex = 14;
             this.chkSync.Text = "Sync";
             this.chkSync.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.chkSync.UseVisualStyleBackColor = true;
+            this.chkSync.UseVisualStyleBackColor = false;
             this.chkSync.CheckedChanged += new System.EventHandler(this.chkSync_CheckedChanged);
             // 
             // lblState
@@ -309,14 +303,15 @@
             // 
             // btnGotoUninstall
             // 
+            this.btnGotoUninstall.BackColor = System.Drawing.Color.Firebrick;
             this.btnGotoUninstall.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnGotoUninstall.ForeColor = System.Drawing.SystemColors.Window;
-            this.btnGotoUninstall.Location = new System.Drawing.Point(18, 220);
+            this.btnGotoUninstall.Location = new System.Drawing.Point(13, 255);
             this.btnGotoUninstall.Name = "btnGotoUninstall";
             this.btnGotoUninstall.Size = new System.Drawing.Size(104, 23);
             this.btnGotoUninstall.TabIndex = 11;
             this.btnGotoUninstall.Text = "Go to Uninstall";
-            this.btnGotoUninstall.UseVisualStyleBackColor = true;
+            this.btnGotoUninstall.UseVisualStyleBackColor = false;
             this.btnGotoUninstall.Click += new System.EventHandler(this.btnGotoUninstall_Click);
             // 
             // notifyIcon1
@@ -381,7 +376,6 @@
             this.Controls.Add(this.btnMinimize);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnGotoUninstall);
-            this.Controls.Add(this.button3);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label7);
@@ -415,7 +409,6 @@
         }
 
         #endregion
-        private System.Windows.Forms.Button button3;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;

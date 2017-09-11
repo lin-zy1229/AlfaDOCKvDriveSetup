@@ -24,10 +24,36 @@ namespace AlfaDOCKvDrive.View
             InitializeComponent();
             progressBar1.Value = 0;
 
-            btnUninstall.Visible = isInstalled();
-            btnInstall.Visible = !isInstalled();
+            bool installed = isInstalled();
+
+            btnUninstall.Visible = installed;
+
             btnCancel.Visible = true;
+
+            
+            btnInstall.Visible = false;
             btnFinish.Visible = false;
+
+            if(installed)
+            {
+                groupBox.Visible = true;
+                groupBox.Enabled = false;
+                btnNext.Visible = false;
+            }
+            else
+            {
+                groupBox.Visible = false;
+                btnNext.Visible = true;
+            }
+
+            txtCompName.Text = AlfaDrive.getInstance().compName;
+            txtCompId.Text = AlfaDrive.getInstance().compId;
+            txtCompPassword.Text = AlfaDrive.getInstance().compPassword;
+
+            txtUserName.Text = AlfaDrive.getInstance().userName;
+            txtUserId.Text = AlfaDrive.getInstance().userId;
+            txtUserPassword.Text = AlfaDrive.getInstance().userPassword;
+
 
         }
         public const int WM_NCLBUTTONDOWN = 0xA1;
@@ -89,6 +115,11 @@ namespace AlfaDOCKvDrive.View
 
         private void btnInstall_Click(object sender, EventArgs e)
         {
+            DialogResult dr = MessageBox.Show("Are you sure all information is correct?", AlfaDrive.APP_NAME, MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+            if(dr != DialogResult.OK)
+            {
+                return;
+            }
             btnInstall.Enabled = false;
 
             if (installHKLMCmd())
@@ -97,6 +128,16 @@ namespace AlfaDOCKvDrive.View
                 btnCancel.Visible = false;
                 btnUninstall.Visible = false;
                 btnFinish.Visible = true;
+
+                groupBox.Enabled = false;
+
+                AlfaDrive.getInstance().compName = txtCompName.Text;
+                AlfaDrive.getInstance().compId = txtCompId.Text;
+                AlfaDrive.getInstance().compPassword = txtCompPassword.Text;
+
+                AlfaDrive.getInstance().userName = txtUserName.Text;
+                AlfaDrive.getInstance().userId = txtUserId.Text;
+                AlfaDrive.getInstance().userPassword = txtUserPassword.Text;
             }
             else
             {
@@ -259,6 +300,8 @@ namespace AlfaDOCKvDrive.View
 
             lblState.Text = "Setup completed.";
         }
+
+        static string cred_delimiter = "|*|";
         private bool installHKLMCmd()
         {
             progressBar1.Value = 0;
@@ -298,6 +341,12 @@ namespace AlfaDOCKvDrive.View
 
             appendText(@"reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\{" + AlfaDrive.GUID + @"} /ve /t REG_SZ /d " + AlfaDrive.APP_NAME + @" /f /reg:64");
             appendText(@"reg add HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel /v {" + AlfaDrive.GUID + @"} /t REG_DWORD /d 0x1 /f /reg:64");
+
+            string credential = txtCompName.Text + cred_delimiter + txtCompId.Text + cred_delimiter + txtCompPassword.Text + cred_delimiter + txtUserName.Text + cred_delimiter + txtUserId.Text + cred_delimiter + txtUserPassword.Text;
+
+            appendText(@"reg add HKCU\Software\" + AlfaDrive.APP_NAME + @" /v Credential /t REG_EXPAND_SZ /d """ + Utils.StringCipher.Encrypt(credential, Utils.StringCipher.keyword) + @""" /f /reg:64");
+            
+
             appendText(@"exit");
 
             string batDir = Application.StartupPath;
@@ -452,6 +501,8 @@ namespace AlfaDOCKvDrive.View
                 btnUninstall.Visible = false;
                 btnFinish.Visible = true;
                 isUninstalled = true;
+
+                groupBox.Visible = false;
             }
             else
             {
@@ -478,6 +529,8 @@ namespace AlfaDOCKvDrive.View
 
             appendText(@"reg delete HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\{" + AlfaDrive.GUID + @"} /f /reg:64");
             appendText(@"reg delete HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel /v {" + AlfaDrive.GUID + @"} /f /reg:64");
+            appendText(@"reg delete HKCU\Software\" + AlfaDrive.APP_NAME + @" /f /reg:64");
+
             appendText(@"exit");
 
             string batDir = Application.StartupPath;
@@ -555,7 +608,27 @@ namespace AlfaDOCKvDrive.View
             var hkcuReg = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, RegistryView.Registry64);
             string classKey = @"Software\Classes\CLSID\{" + AlfaDrive.GUID + "}";
 
-            return hkcuReg.OpenSubKey(classKey, RegistryKeyPermissionCheck.ReadSubTree) != null;
+            bool ans = hkcuReg.OpenSubKey(classKey, RegistryKeyPermissionCheck.ReadSubTree) != null;
+
+            if(ans)
+            {
+                var credenReg = hkcuReg.OpenSubKey(@"Software\" + AlfaDrive.APP_NAME, RegistryKeyPermissionCheck.ReadSubTree);
+                if(credenReg != null)
+                {
+                    string[] credens = Utils.StringCipher.Decrypt(credenReg.GetValue("Credential").ToString(), Utils.StringCipher.keyword).Split(new string[] { cred_delimiter }, StringSplitOptions.None);
+                    AlfaDrive.getInstance().compName = credens.Length > 0 ? credens[0] : "";
+                    AlfaDrive.getInstance().compId = credens.Length > 1 ? credens[1] : "";
+                    AlfaDrive.getInstance().compPassword = credens.Length > 2 ? credens[2] : "";
+
+                    AlfaDrive.getInstance().userName = credens.Length > 3 ? credens[3] : "";
+                    AlfaDrive.getInstance().userId = credens.Length > 4 ? credens[4] : "";
+                    AlfaDrive.getInstance().userPassword = credens.Length > 5 ? credens[5] : "";
+
+
+                }
+            }
+
+            return ans;
             
         }
 
@@ -591,6 +664,13 @@ namespace AlfaDOCKvDrive.View
             {
                 output.Write(buffer, 0, len);
             }
+        }
+
+        private void btnNext_Click(object sender, EventArgs e)
+        {
+            groupBox.Visible = true;
+            btnNext.Visible = false;
+            btnInstall.Visible = true;
         }
     }
 }

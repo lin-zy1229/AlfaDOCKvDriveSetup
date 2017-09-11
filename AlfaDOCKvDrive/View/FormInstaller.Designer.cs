@@ -42,7 +42,23 @@
             this.label10 = new System.Windows.Forms.Label();
             this.btnFinish = new System.Windows.Forms.Button();
             this.btnUninstall = new System.Windows.Forms.Button();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.txtUserPassword = new System.Windows.Forms.TextBox();
+            this.txtCompPassword = new System.Windows.Forms.TextBox();
+            this.txtUserId = new System.Windows.Forms.TextBox();
+            this.txtCompId = new System.Windows.Forms.TextBox();
+            this.txtUserName = new System.Windows.Forms.TextBox();
+            this.txtCompName = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.groupBox = new System.Windows.Forms.GroupBox();
+            this.btnNext = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.groupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnInstall
@@ -127,7 +143,7 @@
             this.lblTitle.AutoSize = true;
             this.lblTitle.Font = new System.Drawing.Font("Microsoft YaHei", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTitle.ForeColor = System.Drawing.SystemColors.Window;
-            this.lblTitle.Location = new System.Drawing.Point(18, 101);
+            this.lblTitle.Location = new System.Drawing.Point(18, 88);
             this.lblTitle.Name = "lblTitle";
             this.lblTitle.Size = new System.Drawing.Size(398, 28);
             this.lblTitle.TabIndex = 29;
@@ -193,17 +209,175 @@
             this.btnUninstall.UseVisualStyleBackColor = true;
             this.btnUninstall.Click += new System.EventHandler(this.btnUninstall_Click);
             // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.ForeColor = System.Drawing.SystemColors.Window;
+            this.label8.Location = new System.Drawing.Point(226, 77);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(53, 13);
+            this.label8.TabIndex = 39;
+            this.label8.Text = "Password";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.ForeColor = System.Drawing.SystemColors.Window;
+            this.label5.Location = new System.Drawing.Point(226, 51);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(43, 13);
+            this.label5.TabIndex = 40;
+            this.label5.Text = "User ID";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.ForeColor = System.Drawing.SystemColors.Window;
+            this.label7.Location = new System.Drawing.Point(9, 77);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(53, 13);
+            this.label7.TabIndex = 41;
+            this.label7.Text = "Password";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.ForeColor = System.Drawing.SystemColors.Window;
+            this.label2.Location = new System.Drawing.Point(9, 51);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(51, 13);
+            this.label2.TabIndex = 42;
+            this.label2.Text = "Comp. ID";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.ForeColor = System.Drawing.SystemColors.Window;
+            this.label4.Location = new System.Drawing.Point(226, 25);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(55, 13);
+            this.label4.TabIndex = 44;
+            this.label4.Text = "Username";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.SystemColors.Window;
+            this.label1.Location = new System.Drawing.Point(9, 25);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(68, 13);
+            this.label1.TabIndex = 45;
+            this.label1.Text = "Comp. Name";
+            // 
+            // txtUserPassword
+            // 
+            this.txtUserPassword.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtUserPassword.Location = new System.Drawing.Point(295, 75);
+            this.txtUserPassword.Name = "txtUserPassword";
+            this.txtUserPassword.Size = new System.Drawing.Size(130, 20);
+            this.txtUserPassword.TabIndex = 33;
+            this.txtUserPassword.UseSystemPasswordChar = true;
+            // 
+            // txtCompPassword
+            // 
+            this.txtCompPassword.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtCompPassword.Location = new System.Drawing.Point(80, 75);
+            this.txtCompPassword.Name = "txtCompPassword";
+            this.txtCompPassword.Size = new System.Drawing.Size(130, 20);
+            this.txtCompPassword.TabIndex = 36;
+            this.txtCompPassword.UseSystemPasswordChar = true;
+            // 
+            // txtUserId
+            // 
+            this.txtUserId.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtUserId.Location = new System.Drawing.Point(295, 49);
+            this.txtUserId.Name = "txtUserId";
+            this.txtUserId.Size = new System.Drawing.Size(130, 20);
+            this.txtUserId.TabIndex = 34;
+            this.txtUserId.Text = "687";
+            // 
+            // txtCompId
+            // 
+            this.txtCompId.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtCompId.Location = new System.Drawing.Point(80, 49);
+            this.txtCompId.Name = "txtCompId";
+            this.txtCompId.Size = new System.Drawing.Size(130, 20);
+            this.txtCompId.TabIndex = 37;
+            this.txtCompId.Text = "279";
+            // 
+            // txtUserName
+            // 
+            this.txtUserName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtUserName.Location = new System.Drawing.Point(295, 23);
+            this.txtUserName.Name = "txtUserName";
+            this.txtUserName.Size = new System.Drawing.Size(130, 20);
+            this.txtUserName.TabIndex = 35;
+            this.txtUserName.Text = "admin";
+            // 
+            // txtCompName
+            // 
+            this.txtCompName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtCompName.Location = new System.Drawing.Point(80, 23);
+            this.txtCompName.Name = "txtCompName";
+            this.txtCompName.Size = new System.Drawing.Size(130, 20);
+            this.txtCompName.TabIndex = 38;
+            this.txtCompName.Text = "alfadrive";
+            // 
+            // label9
+            // 
+            this.label9.BackColor = System.Drawing.Color.DarkKhaki;
+            this.label9.ForeColor = System.Drawing.SystemColors.Window;
+            this.label9.Location = new System.Drawing.Point(218, 22);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(1, 75);
+            this.label9.TabIndex = 43;
+            // 
+            // groupBox
+            // 
+            this.groupBox.Controls.Add(this.label8);
+            this.groupBox.Controls.Add(this.label5);
+            this.groupBox.Controls.Add(this.label7);
+            this.groupBox.Controls.Add(this.label2);
+            this.groupBox.Controls.Add(this.label4);
+            this.groupBox.Controls.Add(this.label1);
+            this.groupBox.Controls.Add(this.txtUserPassword);
+            this.groupBox.Controls.Add(this.txtCompPassword);
+            this.groupBox.Controls.Add(this.txtUserId);
+            this.groupBox.Controls.Add(this.txtCompId);
+            this.groupBox.Controls.Add(this.txtUserName);
+            this.groupBox.Controls.Add(this.txtCompName);
+            this.groupBox.Controls.Add(this.label9);
+            this.groupBox.Location = new System.Drawing.Point(6, 124);
+            this.groupBox.Name = "groupBox";
+            this.groupBox.Size = new System.Drawing.Size(433, 108);
+            this.groupBox.TabIndex = 46;
+            this.groupBox.TabStop = false;
+            // 
+            // btnNext
+            // 
+            this.btnNext.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNext.ForeColor = System.Drawing.SystemColors.Window;
+            this.btnNext.Location = new System.Drawing.Point(250, 255);
+            this.btnNext.Name = "btnNext";
+            this.btnNext.Size = new System.Drawing.Size(102, 23);
+            this.btnNext.TabIndex = 24;
+            this.btnNext.Text = "&Next";
+            this.btnNext.UseVisualStyleBackColor = true;
+            this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
+            // 
             // FormInstaller
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.OliveDrab;
             this.ClientSize = new System.Drawing.Size(445, 290);
+            this.Controls.Add(this.groupBox);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.btnMinimize);
             this.Controls.Add(this.lblState);
             this.Controls.Add(this.lblTitle);
             this.Controls.Add(this.progressBar1);
+            this.Controls.Add(this.btnNext);
             this.Controls.Add(this.btnUninstall);
             this.Controls.Add(this.btnInstall);
             this.Controls.Add(this.btnClose);
@@ -220,6 +394,8 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormInstaller_FormClosing);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FormInstaller_MouseDown);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.groupBox.ResumeLayout(false);
+            this.groupBox.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -240,5 +416,20 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Button btnFinish;
         private System.Windows.Forms.Button btnUninstall;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox txtUserPassword;
+        private System.Windows.Forms.TextBox txtCompPassword;
+        private System.Windows.Forms.TextBox txtUserId;
+        private System.Windows.Forms.TextBox txtCompId;
+        private System.Windows.Forms.TextBox txtUserName;
+        private System.Windows.Forms.TextBox txtCompName;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.GroupBox groupBox;
+        private System.Windows.Forms.Button btnNext;
     }
 }

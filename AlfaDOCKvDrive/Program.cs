@@ -17,6 +17,7 @@ namespace AlfaDOCKvDrive
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
             if(FormInstaller.isInstalled())
             {
                 Application.Run(new FormSettings());

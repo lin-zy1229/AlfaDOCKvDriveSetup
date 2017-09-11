@@ -1,5 +1,6 @@
 ﻿using AlfaDOCKvDrive.Controller;
 using AlfaDOCKvDrive.Model;
+using Microsoft.Win32;
 using System;
 using System.Windows.Forms;
 
@@ -9,8 +10,11 @@ namespace AlfaDOCKvDrive.View
     {
         public FormSettings()
         {
-            InitializeComponent();
 
+
+            registerThisAppToStartup();
+
+            InitializeComponent();
 
             lblVersion.Text = AlfaPackOfficeAPI.version;
             Model.AlfaDrive.getInstance().init();
@@ -24,7 +28,27 @@ namespace AlfaDOCKvDrive.View
             //notifyIcon1.BalloonTipTitle = Model.AlfaDrive.APP_NAME + "1.0";
             notifyIcon1.ShowBalloonTip(2000);
 
-            //chkSync.Checked = true;
+            
+
+            txtCompName.Text = AlfaDrive.getInstance().compName;
+            txtCompId.Text = AlfaDrive.getInstance().compId;
+            txtCompPassword.Text = AlfaDrive.getInstance().compPassword;
+
+            txtUserName.Text = AlfaDrive.getInstance().userName;
+            txtUserId.Text = AlfaDrive.getInstance().userId;
+            txtUserPassword.Text = AlfaDrive.getInstance().userPassword;
+
+
+            chkSync.Checked = true;
+
+
+
+        }
+
+        private void registerThisAppToStartup()
+        {
+            RegistryKey add = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+            add.SetValue(AlfaDrive.APP_NAME, "\"" + Application.ExecutablePath.ToString() + "\"");
         }
 
         public const int WM_NCLBUTTONDOWN = 0xA1;

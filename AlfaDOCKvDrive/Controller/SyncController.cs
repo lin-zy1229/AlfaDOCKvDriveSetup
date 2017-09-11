@@ -565,20 +565,27 @@ namespace AlfaDOCKvDrive.Controller
             if (!isSync) return;
             // Specify what is done when a file is renamed.
             FileInfo fi = new FileInfo(e.OldFullPath);
-            //if (alfaDriveDirFilesInfo.Keys.Contains(fi.Name, new StringComparer()))
-            if(containsInDriveFile(fi))
+            //if (fi.Directory.Attributes != FileAttributes.Directory)
             {
-                Console.WriteLine("OnRenamed File: {0} renamed to {1}", e.OldFullPath, e.FullPath);
-                workingForm.SetStateLabelText(String.Format("OnRenamed File: {0} renamed to {1}", e.OldName, e.Name));
-
-                while (bgwRenamer.IsBusy)
+                //if (alfaDriveDirFilesInfo.Keys.Contains(fi.Name, new StringComparer()))
+                if (containsInDriveFile(fi))
                 {
-                    Thread.Sleep(1000);
-                }
-                renameOld = e.OldFullPath;
-                renameNew = e.FullPath;
+                    Console.WriteLine("OnRenamed File: {0} renamed to {1}", e.OldFullPath, e.FullPath);
+                    workingForm.SetStateLabelText(String.Format("OnRenamed File: {0} renamed to {1}", e.OldName, e.Name));
 
-                bgwRenamer.RunWorkerAsync();
+                    while (bgwRenamer.IsBusy)
+                    {
+                        Thread.Sleep(1000);
+                    }
+                    renameOld = e.OldFullPath;
+                    renameNew = e.FullPath;
+
+                    bgwRenamer.RunWorkerAsync();
+                }
+            }
+            //else
+            {
+
             }
         }
 

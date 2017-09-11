@@ -85,6 +85,7 @@
     <Compile Include="Model\AlfaDrive.cs" />
     <Compile Include="Model\FormUpload.cs" />
     <Compile Include="Model\ReadOnlyFileIconOverlayHandler.cs" />
+    <Compile Include="Utils\StringCipher.cs" />
     <Compile Include="View\FormSettings.cs">
       <SubType>Form</SubType>
     </Compile>
